@@ -26,7 +26,15 @@ export const StyledChat = styled.main`
         gap: 4px;
         padding: 0 16px 14px;
         overflow-y: auto;
-        overscroll-behavior: contain;        scroll-behavior: smooth;    }
+        overscroll-behavior: contain;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+    }
+
+    .chat-container::-webkit-scrollbar {
+        display: none;
+    }
 
     .chat-container::before {
         content: '';
