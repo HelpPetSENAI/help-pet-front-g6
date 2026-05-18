@@ -2,7 +2,7 @@ import { StyledConversationWrapper } from '../styles/ConversationWrapperStyles.j
 import ChatListElement from "./ChatListElement.jsx";
 import Wrapper from "./Wrapper.jsx";
 import { useNavigate } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import SenderMessage from "./SenderMessage";
 import RecipientMessage from "./RecipientMessage";
 import MessageInput from './MessageInput.jsx';
@@ -12,6 +12,13 @@ export default function ConversationWrapper() {
     const navigate = useNavigate();
     const [messages, setMessages] = useState([]);
     const [selectedChat, setSelectedChat] = useState(false);
+    const desktopChatEndRef = useRef(null);
+
+    useEffect(() => {
+        if (desktopChatEndRef.current) {
+            desktopChatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }, [messages]);
 
     const handleChatClick = () => {
         if (window.matchMedia('(min-width: 769px)').matches) {
@@ -68,6 +75,7 @@ export default function ConversationWrapper() {
                                         />
                                     )
                                 )}
+                                <div ref={desktopChatEndRef} />
                             </div>
                             <MessageInput className="desktop-message-input" onSendMessage={handleSendMessage} />
                         </>

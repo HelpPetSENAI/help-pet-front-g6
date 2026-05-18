@@ -12,10 +12,10 @@ export const StyledRecipientMessage = styled.div`
     .message-box {
         display: flex;
         flex-direction: row;
-        justify-content: end;
         align-items: center;
         max-width: calc(100% - 109px);
         min-width: 0;
+        min-height: 100vh;
         border-radius: 8px;
         background: var(--clr-green-500);
         font-size: 12px;

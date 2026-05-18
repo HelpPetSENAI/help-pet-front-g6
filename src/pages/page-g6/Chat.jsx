@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "./components/Header";
 import Wrapper from "./components/Wrapper";
 import MessageInput from './components/MessageInput';
@@ -8,6 +8,13 @@ import RecipientMessage from "./components/RecipientMessage";
 
 export default function Chat() {
     const [messages, setMessages] = useState([]);
+    const chatEndRef = useRef(null);
+
+    useEffect(() => {
+        if (chatEndRef.current) {
+            chatEndRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        }
+    }, [messages]);
 
     function handleSendMessage(text) {
         const newMessage = {
@@ -44,6 +51,7 @@ export default function Chat() {
                             />
                         )
                     )}
+                    <div ref={chatEndRef} />
                 </div>
             </Wrapper>
             <MessageInput onSendMessage={handleSendMessage} />
