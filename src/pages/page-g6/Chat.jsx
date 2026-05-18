@@ -1,13 +1,19 @@
-import { useState } from "react";
+import { useEffect, useRef } from "react";
 import Header from "./components/Header";
 import Wrapper from "./components/Wrapper";
 import MessageInput from './components/MessageInput';
 import { StyledChat } from "./ChatStyled";
 import SenderMessage from "./components/SenderMessage";
 import RecipientMessage from "./components/RecipientMessage";
+import { useMessages } from "./context/MessagesContext";
 
 export default function Chat() {
-    const [messages, setMessages] = useState([]);
+    const { messages, setMessages } = useMessages();
+    const messagesEndRef = useRef(null);
+
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
 
     function handleSendMessage(text) {
         const newMessage = {
@@ -44,6 +50,7 @@ export default function Chat() {
                             />
                         )
                     )}
+                    <div ref={messagesEndRef} />
                 </div>
             </Wrapper>
             <MessageInput onSendMessage={handleSendMessage} />

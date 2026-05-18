@@ -97,11 +97,12 @@ export const StyledConversationWrapper = styled.section`
             display: flex;
             flex: 1;
             flex-direction: column;
-            justify-content: flex-end;
             width: 100%;
             gap: 8px;
             overflow-y: auto;
             padding: 0 0 20px;
+            scrollbar-width: none;
+            &::-webkit-scrollbar { display: none; }
         }
 
         .desktop-empty-message {
