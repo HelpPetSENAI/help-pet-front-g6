@@ -19,6 +19,14 @@ export default function ConversationWrapper() {
         }
     });
     const [selectedChat, setSelectedChat] = useState(false);
+    const [unreadChats, setUnreadChats] = useState(() => {
+        try {
+            const saved = localStorage.getItem('g6_unread_chats');
+            return saved ? JSON.parse(saved) : [true, false, false];
+        } catch {
+            return [true, false, false];
+        }
+    });
     const desktopMessagesRef = useRef(null);
 
     useEffect(() => {
@@ -27,7 +35,14 @@ export default function ConversationWrapper() {
         }
     }, [messages]);
 
-    const handleChatClick = () => {
+    const handleChatClick = (index) => {
+        setUnreadChats((prev) => {
+            const updated = [...prev];
+            updated[index] = false;
+            localStorage.setItem('g6_unread_chats', JSON.stringify(updated));
+            return updated;
+        });
+
         if (window.matchMedia('(min-width: 769px)').matches) {
             setSelectedChat(true);
             return;
@@ -60,9 +75,9 @@ export default function ConversationWrapper() {
                 <aside className="chat-list-panel">
                     <h1 className="chat-list-title">Conversas</h1>
                     <div className="chats-group">
-                        <ChatListElement onlyClick={handleChatClick}/>
-                        <ChatListElement onlyClick={handleChatClick}/>
-                        <ChatListElement onlyClick={handleChatClick}/>
+                        <ChatListElement onlyClick={() => handleChatClick(0)} hasUnread={unreadChats[0]} />
+                        <ChatListElement onlyClick={() => handleChatClick(1)} hasUnread={unreadChats[1]} />
+                        <ChatListElement onlyClick={() => handleChatClick(2)} hasUnread={unreadChats[2]} />
                     </div>
                     <div className='ghost-element'></div>
                 </aside>
