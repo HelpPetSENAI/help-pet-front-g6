@@ -106,6 +106,12 @@ export const StyledConversationWrapper = styled.section`
             -ms-overflow-style: none;
         }
 
+        .desktop-messages::before {
+            content: '';
+            flex: 1;
+            min-height: 0;
+        }
+
         .desktop-messages::-webkit-scrollbar {
             display: none;
         }
