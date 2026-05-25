@@ -10,13 +10,20 @@ import MessageInput from './MessageInput.jsx';
 
 export default function ConversationWrapper() {
     const navigate = useNavigate();
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState(() => {
+        try {
+            const saved = localStorage.getItem('g6_chat_messages');
+            return saved ? JSON.parse(saved) : [];
+        } catch {
+            return [];
+        }
+    });
     const [selectedChat, setSelectedChat] = useState(false);
-    const desktopChatEndRef = useRef(null);
+    const desktopMessagesRef = useRef(null);
 
     useEffect(() => {
-        if (desktopChatEndRef.current) {
-            desktopChatEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        if (desktopMessagesRef.current) {
+            desktopMessagesRef.current.scrollTo({ top: desktopMessagesRef.current.scrollHeight, behavior: 'smooth' });
         }
     }, [messages]);
 
@@ -40,7 +47,11 @@ export default function ConversationWrapper() {
             }),
         };
 
-        setMessages((currentMessages) => [...currentMessages, newMessage]);
+        setMessages((currentMessages) => {
+            const updated = [...currentMessages, newMessage];
+            localStorage.setItem('g6_chat_messages', JSON.stringify(updated));
+            return updated;
+        });
     }
 
     return (
@@ -59,7 +70,7 @@ export default function ConversationWrapper() {
                     {selectedChat ? (
                         <>
                             <h1 className="recipient-username">Pessoa</h1>
-                            <div className="desktop-messages">
+                            <div className="desktop-messages" ref={desktopMessagesRef}>
                                 {messages.map((message) =>
                                     message.author === "recipient" ? (
                                         <RecipientMessage
@@ -75,7 +86,6 @@ export default function ConversationWrapper() {
                                         />
                                     )
                                 )}
-                                <div ref={desktopChatEndRef} />
                             </div>
                             <MessageInput className="desktop-message-input" onSendMessage={handleSendMessage} />
                         </>
