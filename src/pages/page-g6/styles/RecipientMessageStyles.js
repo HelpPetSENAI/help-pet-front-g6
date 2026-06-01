@@ -9,10 +9,15 @@ export const StyledRecipientMessage = styled.div`
     gap: 6px;
     font-family: var(--main-font);
 
+    > svg {
+        flex-shrink: 0;
+        margin-top: 0;
+    }
+
     .message-box {
         display: flex;
         flex-direction: row;
-        justify-content: end;
+        justify-content: flex-start;
         align-items: center;
         max-width: calc(100% - 109px);
         min-width: 0;
@@ -23,6 +28,10 @@ export const StyledRecipientMessage = styled.div`
         padding: 10px;
         overflow-wrap: anywhere;
         word-break: break-word;
+    }
+
+    .message-box p {
+        margin: 0;
     }
 
     .message-hour {

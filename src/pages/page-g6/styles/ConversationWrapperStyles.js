@@ -103,6 +103,26 @@ export const StyledConversationWrapper = styled.section`
             padding: 0 0 20px;
             scrollbar-width: none;
             &::-webkit-scrollbar { display: none; }
+
+            .new-message-divider {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin: 8px 0;
+                font-size: 12px;
+                color: #000;
+            }
+
+            .new-message-divider::before,
+            .new-message-divider::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background: #000;
+                opacity: 0.3;
+            }
         }
 
         .desktop-empty-message {

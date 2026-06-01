@@ -10,7 +10,7 @@ export const StyledMessageInput = styled.div`
     background: var(--clr-green-200);
     box-shadow: 2px 2px 0 var(--clr-neutral-1000);
 
-    width: 84%;
+    width: var(--chat-content-width, 84vw);
     left: 0;
     right: 0;
     margin: 0 auto;
