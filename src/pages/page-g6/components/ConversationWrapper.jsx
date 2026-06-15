@@ -35,7 +35,7 @@ export default function ConversationWrapper() {
         }, (conversation) => {
             const conversationBody = JSON.parse(conversation.body);
             setConversationList((currentConversations) =>
-                [...currentConversations, conversationBody]);
+                [conversationBody, ...currentConversations]);
         });
 
         return () => {
