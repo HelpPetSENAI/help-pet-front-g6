@@ -25,7 +25,7 @@ export default function ConversationWrapper() {
     useEffect(() => {
 
         if(!tokenInput) {
-            return console.log("Não há um token para conectar ao WebSocket!");
+            return console.log("Não há um token para se conectar ao WebSocket!");
         }
 
         connectWebSocket(tokenInput, (message) => {
@@ -46,7 +46,7 @@ export default function ConversationWrapper() {
     useEffect(() => {
 
         if(!tokenInput) {
-            return console.log("Não há um token para conectar à API!");
+            return console.log("Não há um token se para conectar à API!");
         }
 
         getUserId(tokenInput)
