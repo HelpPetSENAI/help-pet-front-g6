@@ -74,7 +74,15 @@ export default function ConversationWrapper() {
             return;
         }
 
-        navigate('/message/chat');
+        navigate('/message/chat', {
+            state: {
+                tokenInput: tokenInput,
+                userId: userId,
+                conversationId: conversationId,
+                receiverId: receiverId,
+                receiverUserName: receiverUserName
+            }
+        });
     }
 
     function handleSendMessage(text) {
