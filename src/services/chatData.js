@@ -1,4 +1,5 @@
 const API_BASE_URL = "http://localhost:8080";
+const NOTIFICATIONS_API_BASE_URL = "http://localhost:8080";
 
 export async function getUserId(token) {
 	try {
@@ -58,6 +59,33 @@ export async function getMessages(token, id) {
 
 		const data = await response.json();
 		return data;
+	} catch (error) {
+		console.error(error);
+	}
+}
+
+export async function sendNotification(token, receiverId, content) {
+
+	const messageData = {
+		userId: receiverId,
+		title: "Mensagem do Chat",
+		message: content,
+		type: "CHAT"
+	}
+
+	try {
+		const response = await fetch(`${NOTIFICATIONS_API_BASE_URL}/notifications/create`, {
+			method: "POST",
+			headers: {
+				"Content-type": "application/json",
+				"Authorization": `Bearer ${token}`
+			},
+			body: JSON.stringify(messageData)
+		});
+
+		if(!response.ok) {
+			throw new Error("Não foi possível enviar a notificação!");
+		}
 	} catch (error) {
 		console.error(error);
 	}

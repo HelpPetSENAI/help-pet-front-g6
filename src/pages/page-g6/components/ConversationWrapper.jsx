@@ -7,7 +7,7 @@ import SenderMessage from "./SenderMessage";
 import RecipientMessage from "./RecipientMessage";
 import MessageInput from './MessageInput.jsx';
 import { connectWebSocket, sendWebSocketMessage, disconnectWebSocket } from "../../../services/webSocket.js";
-import { getUserId, getChatList , getMessages} from "../../../services/chatData.js";
+import { getUserId, getChatList , getMessages, sendNotification } from "../../../services/chatData.js";
 // Conversation Page
 
 export default function ConversationWrapper() {
@@ -98,6 +98,8 @@ export default function ConversationWrapper() {
         setMessages((currentMessages) => [...currentMessages, newMessage]);
 
         sendWebSocketMessage(text, receiverId, conversationId);
+
+        sendNotification(tokenInput, receiverId, text);
     }
 
     function formatTimestamp(timestamp) {
