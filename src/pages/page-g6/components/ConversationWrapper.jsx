@@ -118,20 +118,20 @@ export default function ConversationWrapper() {
                     <h1 className="chat-list-title">Conversas</h1>
                     <div className="chats-group">
                         {conversationList.map((conversation) => (
-                            <ChatListElement
-                                key={conversation.id}
-                                onlyClick={() => handleChatClick(conversation.id,
-                                    userId === conversation.adopter?.id ?
-                                    conversation.owner?.id :
-                                    conversation.adopter?.id,
-                                    userId === conversation.adopter?.id ?
-                                    conversation.owner?.fullName :
-                                    conversation.adopter?.fullName)}
-                                userName={userId === conversation.adopter?.id ?
-                                    conversation.owner?.fullName :
-                                    conversation.adopter?.fullName}
-                                lastMessage={conversation.lastMessage}
-                                lastMessageAt={formatTimestamp(conversation.lastMessageAt)}/>
+                                <ChatListElement
+                                    key={conversation.id}
+                                    onlyClick={() => handleChatClick(conversation.id,
+                                        userId === conversation.adopter?.id ?
+                                            conversation.owner?.id :
+                                            conversation.adopter?.id,
+                                        userId === conversation.adopter?.id ?
+                                            conversation.owner?.fullName :
+                                            conversation.adopter?.fullName)}
+                                    userName={userId === conversation.adopter?.id ?
+                                        conversation.owner?.fullName :
+                                        conversation.adopter?.fullName}
+                                    lastMessage={conversation.lastMessage}
+                                    lastMessageAt={formatTimestamp(conversation.lastMessageAt)}/>
                             )
                         )}
                     </div>
