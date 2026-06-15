@@ -1,5 +1,5 @@
-const API_BASE_URL = "http://localhost:8080";
-const NOTIFICATIONS_API_BASE_URL = "http://localhost:8080";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const NOTIFICATIONS_API_BASE_URL = import.meta.env.VITE_NOTIFICATIONS_API_BASE_URL;
 
 export async function getUserId(token) {
 	try {

@@ -1,6 +1,6 @@
 import { Client } from "@stomp/stompjs";
 
-const WEBSOCKET_URL = "ws://localhost:8080/chat";
+const WEBSOCKET_URL = import.meta.env.VITE_WEBSOCKET_URL;
 
 let client = null;
 
