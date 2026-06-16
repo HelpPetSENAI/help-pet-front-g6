@@ -101,19 +101,28 @@ export const StyledConversationWrapper = styled.section`
             gap: 8px;
             overflow-y: auto;
             padding: 0 0 20px;
-            scroll-behavior: smooth;
             scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
+            &::-webkit-scrollbar { display: none; }
 
-        .desktop-messages::before {
-            content: '';
-            flex: 1;
-            min-height: 0;
-        }
+            .new-message-divider {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin: 8px 0;
+                font-size: 12px;
+                color: #000;
+            }
 
-        .desktop-messages::-webkit-scrollbar {
-            display: none;
+            .new-message-divider::before,
+            .new-message-divider::after {
+                content: "";
+                flex: 1;
+                height: 1px;
+                background: #000;
+                opacity: 0.3;
+            }
         }
 
         .desktop-empty-message {

@@ -12,7 +12,7 @@ export const StyledSenderMessage = styled.div`
     .message-box {
         display: flex;
         flex-direction: row;
-        justify-content: end;
+        justify-content: flex-start;
         align-items: center;
         max-width: calc(100% - 109px);
         min-width: 0;

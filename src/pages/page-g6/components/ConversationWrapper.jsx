@@ -2,32 +2,30 @@ import { StyledConversationWrapper } from '../styles/ConversationWrapperStyles.j
 import ChatListElement from "./ChatListElement.jsx";
 import Wrapper from "./Wrapper.jsx";
 import { useNavigate } from 'react-router-dom';
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, useRef, Fragment } from "react";
 import SenderMessage from "./SenderMessage";
 import RecipientMessage from "./RecipientMessage";
 import MessageInput from './MessageInput.jsx';
+import { useMessages } from '../context/MessagesContext.jsx';
 // Conversation Page
 
 export default function ConversationWrapper() {
     const navigate = useNavigate();
-    const [messages, setMessages] = useState(() => {
-        try {
-            const saved = localStorage.getItem('g6_chat_messages');
-            return saved ? JSON.parse(saved) : [];
-        } catch {
-            return [];
-        }
-    });
+    const { messages, setMessages, selectedChatId, setSelectedChatId, chatList, setChatList, markChatAsRead } = useMessages();
     const [selectedChat, setSelectedChat] = useState(false);
     const desktopMessagesRef = useRef(null);
+    const currentChat = chatList.find((chat) => chat.id === selectedChatId);
+    const firstNewMessageIndex = messages.findIndex((message) => message.isNew);
+    const showNewMessageDivider = currentChat?.hasUnread && firstNewMessageIndex !== -1;
 
     useEffect(() => {
-        if (desktopMessagesRef.current) {
-            desktopMessagesRef.current.scrollTo({ top: desktopMessagesRef.current.scrollHeight, behavior: 'smooth' });
-        }
+        const el = desktopMessagesRef.current;
+        if (el) el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
     }, [messages]);
 
-    const handleChatClick = () => {
+    const handleChatClick = (chatId) => {
+        setSelectedChatId(chatId);
+
         if (window.matchMedia('(min-width: 769px)').matches) {
             setSelectedChat(true);
             return;
@@ -37,21 +35,31 @@ export default function ConversationWrapper() {
     }
 
     function handleSendMessage(text) {
+        const hour = new Date().toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+
         const newMessage = {
             id: Date.now(),
             author: "sender",
             text,
-            hour: new Date().toLocaleTimeString("pt-BR", {
-                hour: "2-digit",
-                minute: "2-digit",
-            }),
+            hour,
         };
 
-        setMessages((currentMessages) => {
-            const updated = [...currentMessages, newMessage];
-            localStorage.setItem('g6_chat_messages', JSON.stringify(updated));
-            return updated;
-        });
+        setMessages((currentMessages) => [
+            ...currentMessages.map((message) =>
+                message.isNew ? { ...message, isNew: false } : message
+            ),
+            newMessage,
+        ]);
+        setChatList((currentChats) =>
+            currentChats.map((chat) =>
+                chat.id === selectedChatId
+                    ? { ...chat, hasUnread: false, lastMessage: text, lastTime: hour }
+                    : chat
+            )
+        );
     }
 
     return (
@@ -60,9 +68,16 @@ export default function ConversationWrapper() {
                 <aside className="chat-list-panel">
                     <h1 className="chat-list-title">Conversas</h1>
                     <div className="chats-group">
-                        <ChatListElement onlyClick={handleChatClick}/>
-                        <ChatListElement onlyClick={handleChatClick}/>
-                        <ChatListElement onlyClick={handleChatClick}/>
+                        {chatList.map((chat) => (
+                            <ChatListElement
+                                key={chat.id}
+                                onlyClick={() => handleChatClick(chat.id)}
+                                username={chat.username}
+                                lastMessage={chat.lastMessage}
+                                lastTime={chat.lastTime}
+                                hasUnread={chat.hasUnread}
+                            />
+                        ))}
                     </div>
                     <div className='ghost-element'></div>
                 </aside>
@@ -71,21 +86,27 @@ export default function ConversationWrapper() {
                         <>
                             <h1 className="recipient-username">Pessoa</h1>
                             <div className="desktop-messages" ref={desktopMessagesRef}>
-                                {messages.map((message) =>
-                                    message.author === "recipient" ? (
-                                        <RecipientMessage
-                                            key={message.id}
-                                            text={message.text}
-                                            hour={message.hour}
-                                        />
-                                    ) : (
-                                        <SenderMessage
-                                            key={message.id}
-                                            text={message.text}
-                                            hour={message.hour}
-                                        />
-                                    )
-                                )}
+                                <div style={{ flex: 1 }} />
+                                {messages.map((message, index) => (
+                                    <Fragment key={message.id}>
+                                        {showNewMessageDivider && message.isNew && index === firstNewMessageIndex && (
+                                            <div className="new-message-divider">
+                                                <span>Nova Mensagem</span>
+                                            </div>
+                                        )}
+                                        {message.author === "recipient" ? (
+                                            <RecipientMessage
+                                                text={message.text}
+                                                hour={message.hour}
+                                            />
+                                        ) : (
+                                            <SenderMessage
+                                                text={message.text}
+                                                hour={message.hour}
+                                            />
+                                        )}
+                                    </Fragment>
+                                ))}
                             </div>
                             <MessageInput className="desktop-message-input" onSendMessage={handleSendMessage} />
                         </>

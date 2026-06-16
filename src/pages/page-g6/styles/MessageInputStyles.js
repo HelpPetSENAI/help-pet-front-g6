@@ -5,18 +5,21 @@ export const StyledMessageInput = styled.div`
     flex-direction: row;
     position: fixed;
     justify-content: space-between;
-    align-items: center; 
+    align-items: center;
     border: 2px solid black;
     background: var(--clr-green-200);
     box-shadow: 2px 2px 0 var(--clr-neutral-1000);
 
-    width: 84%;        
+    width: var(--chat-content-width, 84vw);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     height: 44px;
-   
-    bottom: 30px;   
-    
-    padding: 20px;     
-    z-index: 100;       
+
+    bottom: 30px;
+
+    padding: 20px;
+    z-index: 100;
 
     .message-input {
         width: 85%;

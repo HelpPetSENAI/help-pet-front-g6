@@ -2,6 +2,7 @@ import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom'
 import GlobalStyle from './styles/GlobalStyle.js'
 import ExamplePage from './pages/ExamplePage.jsx'
 import MessagePageG6 from './pages/page-g6/MessagePageG6.jsx'
+import { MessagesProvider } from './pages/page-g6/context/MessagesContext.jsx';
 import Chat from './pages/page-g6/Chat.jsx';
 import ComingSoonPage from './pages/CommingSoonPage/CommingSoonPage.jsx'
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx'
@@ -121,12 +122,10 @@ const router = createBrowserRouter([
 ])
 
 export default function App() {
-
-    return (
-        <>
-            <GlobalStyle/>
-            {/* RouterProvider fornece as rotas definidas acima para serem renderizadas através do atríbuto router */}
-            <RouterProvider router={router}/>
-        </>
-    )
+  return (
+    <MessagesProvider>
+      <GlobalStyle />
+      <RouterProvider router={router} />
+    </MessagesProvider>
+  )
 }
